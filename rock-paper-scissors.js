@@ -61,7 +61,7 @@ function playGame () {
     }
     console.log (`You won: ${playerWinCount}. Computer won: ${compWinCount}`);
 }
-let result = confirm("Play 6 rounds of Rock, Paper, Scissors?");
+let result = confirm("Play 6 rounds of Rock, Paper, Scissors? (Open Dev Tools Console to see result)");
 while (result === true){
     playGame();
     result = confirm("Play Rock, Paper, Scissors?");
