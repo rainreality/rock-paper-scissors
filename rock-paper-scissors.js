@@ -64,5 +64,5 @@ function playGame () {
 let result = confirm("Play 6 rounds of Rock, Paper, Scissors? (Open Dev Tools Console to see result)");
 while (result === true){
     playGame();
-    result = confirm("Play Rock, Paper, Scissors?");
+    result = confirm("Play Again?");
 }
