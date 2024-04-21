@@ -31,38 +31,61 @@ function playRound (playerSelection, computerSelection) {
         default:
             return "NULL";
     }
-    
 }
-function playGame () {
-    let playerWinCount = 0;
-    let compWinCount = 0;
+function playGame (selection) {
     let roundResult;
-    let gameCount = 0;
-    while (gameCount < 6) {
-        let playerSelection = prompt("Please enter either 'ROCK, PAPER, or SCISSORS`","");
-        const computerSelection = getComputerChoice();
-        playerSelection = playerSelection.toUpperCase();
-        roundResult = playRound(playerSelection, computerSelection);
-        if (roundResult === "playerWin"){
-            playerWinCount++;
-            gameCount++;
-            console.log(`Round ${gameCount} - Player Wins ${gameCount} Game(s): ${playerSelection} beats ${computerSelection}`);
-        } else if (roundResult === "compWin"){
-            compWinCount++;
-            gameCount++;
-            console.log(`Round ${gameCount} - Computer Wins ${gameCount} Game(s): ${computerSelection} beats ${playerSelection}`);
-        } else if (roundResult === "TIE"){
-            gameCount++;
-            console.log(`Round ${gameCount} - It's a Tie! Player chose ${playerSelection} and Computer chose ${computerSelection}`);
-        }
-        else {
-            console.log (`Invalid Selection: '${playerSelection}', try again`);
-        }
+    let playerSelection = selection.id
+    const computerSelection = getComputerChoice();
+    playerSelection = playerSelection.toUpperCase();
+    roundResult = playRound(playerSelection, computerSelection);
+    const resultOutput = document.querySelector("p");
+    resultOutput.style.backgroundColor = "white";
+    resultOutput.style.color = "black";
+    const resultDiv = document.querySelector("#result");
+    const playerWins = document.querySelector("#player-wins");
+    playerWins.textContent = `Player Wins: ${pWins}`;
+    const computerWins = document.querySelector("#computer-wins");
+    computerWins.textContent = `Computer Wins: ${cWins}`;
+    resultDiv.appendChild(resultOutput);
+    if (roundResult === "playerWin"){
+        resultOutput.textContent = `Player Wins: ${playerSelection} beats ${computerSelection}`;
+        playerWins.textContent = `Player Wins: ${++pWins}`;
+    } else if (roundResult === "compWin"){
+        resultOutput.textContent = `Computer Wins: ${computerSelection} beats ${playerSelection}`;
+        computerWins.textContent = `Computer Wins: ${++cWins}`;
+    } else if (roundResult === "TIE"){
+        resultOutput.textContent = `It's a Tie! Player chose ${playerSelection} and Computer chose ${computerSelection}`;
+    } else {
+        resultOutput.textContent = `Invalid Selection: '${playerSelection}', try again`;
     }
-    console.log (`You won: ${playerWinCount}. Computer won: ${compWinCount}`);
 }
-let result = confirm("Play 6 rounds of Rock, Paper, Scissors? (Open Dev Tools Console to see result)");
-while (result === true){
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+        playGame(e.target);
+        ++gameCount;
+        if (gameCount === 5){
+            const resultOutput = document.querySelector("p");
+            resultOutput.style.backgroundColor = "green";
+            resultOutput.style.color = "white";
+            if (pWins > cWins){
+                resultOutput.textContent = `You are the winner after 5 games. There were ${5-cWins-pWins} ties`;
+            } else if (pWins < cWins) {
+                resultOutput.textContent = `The computer is the winner after 5 games. There were ${5-cWins-pWins} ties`;
+            } else {
+                resultOutput.textContent = `It was a tie after 5 games. There were ${5-cWins-pWins} ties`;
+            }
+            cWins = 0;
+            pWins = 0;
+            gameCount = 0;
+        }
+    });
+});
+let pWins = 0;
+let cWins = 0;
+let gameCount = 0;
+let result = false;
+while (result === true) {
     playGame();
     result = confirm("Play Again?");
 }
